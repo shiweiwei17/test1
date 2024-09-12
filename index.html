@@ -1,58 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width; initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width; initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
     <title></title>
-    <link rel="stylesheet" href="./css/public.css">
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/public.css" />
+    <link rel="stylesheet" href="./css/index.css" />
     <script src="./js/jquery-3.1.1.min.js"></script>
     <script src="./js/lib-flexible.js"></script>
     <script src="./js/echarts.min.js"></script>
+  </head>
 
-</head>
+  <body>
+    <div class="wrap">
+      <div class="container">
+        <div class="search">
+          <div class="input">
+            <input id="myInput" type="number" placeholder="请输入次数" />
+          </div>
+          <div class="btn" id="start">开 始</div>
+        </div>
 
-<body>
-    <div id="app" class="wrapper index">
-        <div class="title1"><img src="./images/bg.png"></div>
-        <div class="submit"><a href="http://www.baidu.com"><img src="./images/1.png"></a></div>
-        <div class="submit1"><a href="http://www.baidu.com"><img src="./images/2.png"></a></div>
-		<div class="submit1"><a href="http://www.baidu.com"><img src="./images/3.png"></a></div>
-		<div class="submit1"><a href="http://www.baidu.com"><img src="./images/2.png"></a></div>
-		<div class="submit1"><a href="http://www.baidu.com"><img src="./images/3.png"></a></div>
-		<div class="submit1"><a href="http://www.baidu.com"><img src="./images/2.png"></a></div>
-		<div class="submit1"><a href="http://www.baidu.com"><img src="./images/3.png"></a></div>
-		<div class="submit1"><a href="http://www.baidu.com"><img src="./images/2.png"></a></div>
-		<div class="submit1"><a href="http://www.baidu.com"><img src="./images/3.png"></a></div>
-		
+        <div
+          id="monthChat"
+          style="width: 100%; height: 400px; top: -30px"
+        ></div>
+      </div>
     </div>
-</body>
-<script src="./js/vue.js"></script>
-<script>
+  </body>
+  <script src="./js/vue.js"></script>
+  <script>
     new Vue({
-        el: '#app',
-        data() {
-            return {
-
-            };
+      el: "#app",
+      data() {
+        return {
+          num: 10,
+          whiteNum: 0,
+          redNum: 0,
+          monthChart: null,
+        };
+      },
+      mounted() {
+        // 获取input元素
+        var inputElement = document.getElementById("myInput");
+        // 给input元素赋值
+        inputElement.value = 10;
+        setTimeout(() => {
+          this.calculable();
+        }, 1000);
+        document.getElementById("start").addEventListener("click", () => {
+          // 获取input元素
+          var inputElement = document.getElementById("myInput");
+          // 获取input元素的值
+          var inputValue = inputElement.value;
+          this.num = inputValue;
+          this.onStart();
+        });
+      },
+      methods: {
+        onStart: function () {
+          this.calculable();
         },
-        mounted() {
-
+        getRandomNumber: function () {
+          return Math.floor(Math.random() * 4) + 1;
         },
-        methods: {
-
-
+        calculable: function () {
+          this.whiteNum = 0;
+          this.redNum = 0;
+          for (let i = 0; i < this.num; i++) {
+            const n = this.getRandomNumber();
+            console.log(n);
+            if (n === 1) {
+              this.whiteNum++;
+            } else {
+              this.redNum++;
+            }
+          }
+          this.initMonthChart();
         },
-        created() {
-
+        initMonthChart: function () {
+          this.monthChart = echarts.init(document.getElementById("monthChat"));
+          const option = {
+            backgroundColor: "#90EE90", // 设置背景色为深灰色
+            xAxis: {
+              type: "category",
+              data: ["粉球", "黄球"],
+            },
+            yAxis: {
+              type: "value",
+            },
+            series: [
+              {
+                data: [
+                  {
+                    value: this.whiteNum,
+                    itemStyle: {
+                      color: "#FF69B4",
+                    },
+                  },
+                  {
+                    value: this.redNum,
+                    itemStyle: {
+                      color: "#FFD700",
+                    },
+                  },
+                ],
+                type: "bar",
+                label: {
+                  show: true, // 显示数值
+                  position: "top", // 数值显示的位置
+                },
+              },
+            ],
+          };
+          this.monthChart.setOption(option, true);
         },
-
-
+      },
+      created() {},
     });
-
-</script>
-
+  </script>
 </html>
