@@ -1,0 +1,26 @@
+.wrapper.index {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    background: #fff;
+}
+
+.wrapper img {
+    display: block;
+    width: 100%;
+}
+
+
+.index .title1 {
+    width: 100%;
+}
+
+.index .submit {
+    width: 95%;
+    margin: -3.24rem auto 0;
+}
+
+.index .submit1 {
+    width: 95%;
+    margin: 0.1rem auto;
+}
